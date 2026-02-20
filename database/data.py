@@ -141,7 +141,18 @@ class Query:
             with self._get_connection() as conn:
                 with conn.cursor(cursor_factory=extras.RealDictCursor) as cursor:
                     cursor.execute(sql_query, values)
-                    
+
+                    # Commit de la transacción siempre después de ejecutar la consulta.
+                    # Esto asegura que las funciones de Postgres que realizan INSERT
+                    # y además retornan valores (cursor.description is True) vean
+                    # sus cambios persistidos.
+                    try:
+                        conn.commit()
+                    except Exception:
+                        # No bloquear si el commit falla aquí; el error se manejará
+                        # en el bloque externo.
+                        pass
+
                     # Verificar si es una consulta que retorna datos
                     if cursor.description:
                         rows = cursor.fetchall()
@@ -149,7 +160,6 @@ class Query:
                         recordsets = [dict(row) for row in rows]
                     else:
                         # Para INSERT, UPDATE, DELETE sin RETURNING
-                        conn.commit()
                         recordsets = []
                     
                     result = {
@@ -166,7 +176,10 @@ class Query:
                 'excepcion': err,
                 'recordsets': None
             }
-            raise result
+            # Re-raise the original exception so Flask/CORS error handlers
+            # receive a proper Exception object (raising a dict caused
+            # TypeError: exceptions must derive from BaseException).
+            raise
             
         finally:
             if auto_close:
