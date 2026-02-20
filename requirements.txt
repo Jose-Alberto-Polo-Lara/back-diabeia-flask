@@ -1,6 +1,8 @@
 Flask==3.0.0
 python-dotenv==1.0.0
-psycopg2-binary==2.9.9
-pandas==2.1.4
-numpy==1.26.3
-openpyxl==3.1.2
+# Use wheel-compatible versions for Windows / CPython 3.14
+psycopg2-binary==2.9.11
+pandas==3.0.1
+numpy==2.4.2
+openpyxl==3.1.5
+Flask-Cors==4.0.0

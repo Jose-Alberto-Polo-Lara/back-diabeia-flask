@@ -24,25 +24,19 @@ def get_data_moment_to_day_db():
     Returns:
         JSON con el catálogo de momentos del día
     """
-    try:
+    
         # request.args contiene los query parameters (equivalente a req.query)
-        query_params = request.args.to_dict()
+    query_params = request.args.to_dict()
         
-        result = common_repository.get_data_moment_to_day_db(query_params)
+    return common_repository.get_data_moment_to_day_db(query_params)
         
-        return jsonify({
-            'success': True,
-            'data': result['recordsets'],
-            'count': len(result['recordsets']) if result['recordsets'] else 0
-        }), 200
+       ## return jsonify({
+       ##     'success': True,
+       ##     'data': result['recordsets'],
+       ##     'count': len(result['recordsets']) if result['recordsets'] else 0
+       # }), 200
         
-    except Exception as e:
-        error_data = e if isinstance(e, dict) else {'error': str(e)}
-        return jsonify({
-            'success': False,
-            'error': str(error_data.get('error', e))
-        }), 500
-
+   
 
 @common_bp.route('/getDataActivityFisicaDB', methods=['GET'])
 def get_data_activity_fisica_db():
@@ -56,25 +50,12 @@ def get_data_activity_fisica_db():
     Returns:
         JSON con el catálogo de actividades físicas
     """
-    try:
-        # request.args contiene los query parameters (equivalente a req.query)
-        query_params = request.args.to_dict()
+    
+    # request.args contiene los query parameters (equivalente a req.query)
+    query_params = request.args.to_dict()
         
-        result = common_repository.get_data_activity_fisica_db(query_params)
+    return common_repository.get_data_activity_fisica_db(query_params)
         
-        return jsonify({
-            'success': True,
-            'data': result['recordsets'],
-            'count': len(result['recordsets']) if result['recordsets'] else 0
-        }), 200
-        
-    except Exception as e:
-        error_data = e if isinstance(e, dict) else {'error': str(e)}
-        return jsonify({
-            'success': False,
-            'error': str(error_data.get('error', e))
-        }), 500
-
 
 # ************ SERVICIOS POST ************
 
@@ -99,30 +80,9 @@ def post_ins_glucose_record():
     Returns:
         JSON con el resultado de la inserción
     """
-    try:
-        # request.get_json() obtiene el body (equivalente a @Body() en routing-controllers)
-        data = request.get_json()
-        
-        # Validación básica
-        if not data:
-            return jsonify({
-                'success': False,
-                'error': 'No se recibieron datos en el body'
-            }), 400
-        
+    
+    data = request.get_json()
         # Ejecutar función de inserción
-        result = common_repository.post_ins_glucose_record(data)
+    return common_repository.post_ins_glucose_record(data)
         
-        return jsonify({
-            'success': True,
-            'data': result['recordsets'],
-            'message': 'Registro de glucosa creado exitosamente'
-        }), 201
-        
-    except Exception as e:
-        error_data = e if isinstance(e, dict) else {'error': str(e)}
-        return jsonify({
-            'success': False,
-            'error': str(error_data.get('error', e))
-        }), 500
-
+       

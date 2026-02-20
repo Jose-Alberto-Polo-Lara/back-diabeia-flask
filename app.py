@@ -3,6 +3,7 @@ Archivo principal - Index
 Aquí se cargan y registran todos los módulos del framework
 """
 from flask import Flask
+from flask_cors import CORS
 from config import Config
 from controllers.common_controller import common_bp
 
@@ -10,6 +11,18 @@ def create_app(config_class=Config):
     """Factory function para crear la aplicación Flask"""
     app = Flask(__name__)
     app.config.from_object(config_class)
+    # Habilitar CORS solo para la API v0 y orígenes de desarrollo conocidos
+    CORS(app, resources={
+       r"/v0/*": {
+           "origins": "*",  # En producción, especificar dominio: ["http://localhost:4200"]
+           "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+           "allow_headers": ["Content-Type", "Authorization"],
+           "expose_headers": ["Content-Type"],
+           "supports_credentials": True,
+           "max_age": 3600
+       }
+   })
+
     
     # Registrar blueprints (módulos)
     app.register_blueprint(common_bp, url_prefix='/v0/common')

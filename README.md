@@ -54,6 +54,8 @@ cd /ruta/donde/quieres/el/proyecto
 # Si usas git:
 git clone <url-del-repositorio>
 cd flask
+pip install -r requirements.txt
+python app.py
 ```
 
 ### PaAPI Endpoints
