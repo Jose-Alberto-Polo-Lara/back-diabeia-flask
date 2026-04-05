@@ -156,6 +156,31 @@ class DataService:
         }
         
         return analysis
+    
+    # ============ Procesamientos de datos ============
+
+    def agrupacion_sintomas(self, sintomas_data):
+        # Agrupar registros por `id_sintoma` y crear un arreglo de intensidades por síntoma
+        records = sintomas_data.get('recordsets', []) or []
+        groups = {}
+        for item in records:
+            sid = item.get('id_sintoma')
+            if sid not in groups:
+                groups[sid] = {
+                    'id_sintoma': sid,
+                    'sintoma': item.get('sintoma'),
+                    'intensidades': []
+                }
+
+            groups[sid]['intensidades'].append({
+                'id_intensidad': item.get('id_intensidad'),
+                'intensidad': item.get('intensidad')
+            })
+
+        grouped = {'recordsets': list(groups.values())}
+        sintomas_data['recordsets'] = grouped['recordsets']
+        return sintomas_data
+
 
 
 # ============ EJEMPLO DE USO ============

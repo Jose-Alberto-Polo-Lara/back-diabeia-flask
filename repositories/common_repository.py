@@ -53,6 +53,24 @@ class CommonRepository:
         """
         return self.query.sp_execute(query_params, 'catalogo_actividad_fisica_fn')
     
+    def get_data_sintomas_db(self, query_params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Obtiene catálogo de síntomas.
+        Ejecuta la función PostgreSQL: catalogosintomas
+        
+        Args:
+            query_params: Diccionario con parámetros para la función
+            
+        Returns:
+            Dict con estructura: {'error': None, 'excepcion': None, 'recordsets': [...]}
+            
+        Example:
+            result = repo.get_data_sintomas_db({})
+            symptoms = result['recordsets']
+        """
+
+        return self.query.sp_execute(query_params, 'fn_catalogo_sintoma_intensidad')    
+    
     # ************ SERVICIOS POST ************
     
     def post_ins_glucose_record(self, query_params: Dict[str, Any]) -> Dict[str, Any]:

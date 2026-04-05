@@ -5,9 +5,10 @@ Traducido desde TypeScript/routing-controllers
 """
 from flask import Blueprint, request, jsonify
 from repositories.common_repository import CommonRepository
-
+from services.data_service import DataService
 common_bp = Blueprint('common', __name__)
 common_repository = CommonRepository()
+data_service = DataService()
 
 
 # ************ SERVICIOS GET ************
@@ -55,6 +56,25 @@ def get_data_activity_fisica_db():
     query_params = request.args.to_dict()
         
     return common_repository.get_data_activity_fisica_db(query_params)
+
+@common_bp.route('/getCatalogoSintomas', methods=['GET'])
+def get_data_sintomas_db():
+    """
+    Obtiene el Catálogo de síntomas
+    
+    @author Jose Alberto Polo Lara
+    FN: catalogosintomas
+    URL: http://{server}:{port}/api/common/getCatalogoSintomas
+    
+    Returns:
+        JSON con el catálogo de síntomas
+    """
+    
+    # request.args contiene los query parameters (equivalente a req.query)
+    query_params = request.args.to_dict()
+    array_sintomas = common_repository.get_data_sintomas_db(query_params)
+    process_data = data_service.agrupacion_sintomas(array_sintomas)
+    return process_data
         
 
 # ************ SERVICIOS POST ************
