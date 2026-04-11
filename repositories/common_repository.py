@@ -94,7 +94,7 @@ class CommonRepository:
             })
             new_record = result['recordsets']
         """
-        return self.query.sp_execute(query_params, 'ins_glucose_record')
+        return self.query.sp_execute(query_params, 'fn_ins_glucose_record')
     
     def close(self):
         """Cierra la conexión del pool"""
