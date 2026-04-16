@@ -27,7 +27,7 @@ def generate_token(user_id, username):
    """
    try:
        # Obtener configuración de forma segura
-       expiration_hours = current_app.config.get('JWT_EXPIRATION_HOURS', 24)
+       expiration_hours = current_app.config.get('JWT_EXPIRATION_HOURS', 0.25)
        secret_key = current_app.config.get('JWT_SECRET_KEY', 'jwt-secret-key-change-in-production')
        algorithm = current_app.config.get('JWT_ALGORITHM', 'HS256')
       
