@@ -129,15 +129,15 @@ def token_required(f):
                token = auth_header.split(" ")[1]
            except IndexError:
                return jsonify({
-                   'success': False,
-                   'message': 'Formato de token inválido. Use: Bearer <token>'
+                   'error': 'Formato de token inválido. Use: Bearer <token>',
+                   'recordsets': []
                }), 401
       
        # PASO 2: Si no hay token, denegar acceso
        if not token:
            return jsonify({
-               'success': False,
-               'message': 'Token de autenticación requerido'
+               'error': 'Token de autenticación requerido',
+               'recordsets': []
            }), 401
       
        # PASO 3: Verificar el token
@@ -146,12 +146,12 @@ def token_required(f):
        # PASO 4: Si el token no es válido, denegar acceso
        if current_user is None:
            return jsonify({
-               'success': False,
-               'message': 'Token inválido o expirado'
+               'error': 'Token inválido o expirado',
+               'recordsets': []
            }), 401
       
        # PASO 5: Si todo está bien, ejecutar la función protegida
-       # Pasamos la información del usuario a la función
+       # NO capturamos errores aquí - dejamos que se propaguen normalmente
        return f(current_user, *args, **kwargs)
   
    return decorated

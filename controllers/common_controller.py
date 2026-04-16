@@ -4,6 +4,7 @@ Controlador para endpoints comunes (catálogos, registros de glucosa)
 Traducido desde TypeScript/routing-controllers
 """
 from flask import Blueprint, request, jsonify
+from middleware.auth_middleware import token_required
 from repositories.common_repository import CommonRepository
 from services.data_service import DataService
 common_bp = Blueprint('common', __name__)
@@ -14,7 +15,8 @@ data_service = DataService()
 # ************ SERVICIOS GET ************
 
 @common_bp.route('/getDataMomentToDayDB', methods=['GET'])
-def get_data_moment_to_day_db():
+@token_required
+def get_data_moment_to_day_db(current_user):
     """
     Obtiene el Catálogo del Momento Toma de Muestra de glucosa
     
@@ -40,7 +42,8 @@ def get_data_moment_to_day_db():
    
 
 @common_bp.route('/getDataActivityFisicaDB', methods=['GET'])
-def get_data_activity_fisica_db():
+@token_required
+def get_data_activity_fisica_db(current_user):
     """
     Obtiene el Catálogo de la actividad física
     
@@ -58,7 +61,8 @@ def get_data_activity_fisica_db():
     return common_repository.get_data_activity_fisica_db(query_params)
 
 @common_bp.route('/getCatalogoSintomas', methods=['GET'])
-def get_data_sintomas_db():
+@token_required
+def get_data_sintomas_db(current_user):
     """
     Obtiene el Catálogo de síntomas
     
@@ -80,7 +84,8 @@ def get_data_sintomas_db():
 # ************ SERVICIOS POST ************
 
 @common_bp.route('/postInsGlucoseRecord', methods=['POST'])
-def post_ins_glucose_record():
+@token_required
+def post_ins_glucose_record(current_user):
     """
     Registra un nuevo registro de glucosa
     

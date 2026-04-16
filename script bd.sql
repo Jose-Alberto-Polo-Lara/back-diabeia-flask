@@ -359,6 +359,51 @@ create table configuracion_menu(
 	constraint fk_menu_usuario_seguridad FOREIGN KEY (seguridad_usuario_id) REFERENCES seguridad_usuario (id_seguridad_usuario)
 )
 
+insert into configuracion_menu (
+	orden,
+	menu_id,
+	rol_id,
+	seguridad_usuario_id
+) values(
+1,6,1,1
+)
+
+select * from configuracion_menu
+
+CREATE OR REPLACE FUNCTION fn_menu(
+   p_id_usuario int
+)
+RETURNS TABLE(
+   orden INTEGER,
+   nombre_menu VARCHAR,
+   icono_menu VARCHAR,
+   ruta_menu VARCHAR,
+   id_rol integer,
+   nombre_rol VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+
+   RETURN QUERY
+
+	select 
+		cu.orden,
+		cm.nombre_menu,
+		cm.icono_menu,
+		cm.ruta_menu,
+		cr.id_rol,
+		cr.nombre_rol
+	from configuracion_menu cu
+	inner join catalogo_menu cm on cu.menu_id = cm.id_menu
+	inner join catalogo_rol cr on cu.rol_id = cr.id_rol
+	inner join seguridad_usuario su on cu.seguridad_usuario_id = su.id_seguridad_usuario
+	where su.catalogo_usuario_id = p_id_usuario and cu.is_activo = true
+	order by cu.orden asc;
+END;
+$$;
+
+select * from fn_menu(1)
 
 
 
