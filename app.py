@@ -6,6 +6,7 @@ from flask import Flask
 from flask_cors import CORS
 from config import Config
 from controllers.common_controller import common_bp
+from controllers.auth_controller import auth_bp
 
 def create_app(config_class=Config):
     """Factory function para crear la aplicación Flask"""
@@ -26,6 +27,7 @@ def create_app(config_class=Config):
     
     # Registrar blueprints (módulos)
     app.register_blueprint(common_bp, url_prefix='/v0/common')
+    app.register_blueprint(auth_bp, url_prefix='/v0/auth')
     
     @app.route('/')
     def index():
@@ -34,7 +36,8 @@ def create_app(config_class=Config):
             'version': '0.1.0',
             'api_version': 'v0',
             'endpoints': {
-                'common': '/v0/common'
+                'common': '/v0/common',
+                'auth': '/v0/auth',
             }
         }
     
