@@ -262,7 +262,31 @@ class UserRepository:
        """
        query_params = {'username': username}
        return self.query.sp_execute(query_params, 'deactivate_user')
-  
+   
+   def catalog_menu(self, iduser: int) -> Dict[int, Any]:
+       """
+       Obtiene el catálogo de menú para un usuario específico.
+       Ejecuta el procedimiento almacenado: catalog_menu
+      
+       Args:
+           iduser: ID del usuario para quien obtener el catálogo
+      
+       Returns:
+           Dict con estructura: {
+               'error': None,
+               'excepcion': None,
+               'recordsets': [bool]  # True si se desactivó, False si no existe
+           }
+      
+       Example:
+           >>> repo = UserRepository()
+           >>> result = repo.deactivate_user('usuario1')
+           >>> success = result['recordsets'][0] if result['recordsets'] else False
+           >>> if success:
+           >>>    print("Usuario desactivado")
+       """
+       query_params = {'iduser': iduser}
+       return self.query.sp_execute(query_params, 'fn_menu')
   
    # ============================================
    # UTILIDADES

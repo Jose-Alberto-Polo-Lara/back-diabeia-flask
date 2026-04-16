@@ -313,9 +313,51 @@ SELECT * FROM validate_login(
    '12345'
 )
 
+create table catalogo_rol(
+	id_rol serial not null primary key,
+	nombre_rol varchar(200) not null,
+	fecha_creacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP not null,
+	is_activo boolean default True
+)
+
+insert into catalogo_rol(
+	nombre_rol
+)
+values('Administrador')
+
+select * from catalogo_rol
+
+create table catalogo_menu(
+	id_menu serial not null primary key,
+	nombre_menu varchar(200) not null,
+	icono_menu varchar(200) not null,
+	ruta_menu varchar(200) not null,
+	fecha_creacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP not null,
+	is_activo boolean default True
+)
+
+insert into catalogo_menu(
+	nombre_menu,
+	icono_menu,
+	ruta_menu
+)
+values('Alertas','fas fa-bell','/panel-administracion/alerts')
+
+select * from catalogo_menu
 
 
-
+create table configuracion_menu(
+	id_configuracion_menu serial not null primary key,
+	fecha_creacion TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP not null,
+	is_activo boolean default True,
+	orden int not null,
+	menu_id int not null,
+	rol_id int not null,
+	seguridad_usuario_id int not null,
+	constraint fk_menu_rol FOREIGN KEY (rol_id) REFERENCES catalogo_rol (id_rol),
+	constraint fk_menu_configuracion FOREIGN KEY (menu_id) REFERENCES catalogo_menu (id_menu),
+	constraint fk_menu_usuario_seguridad FOREIGN KEY (seguridad_usuario_id) REFERENCES seguridad_usuario (id_seguridad_usuario)
+)
 
 
 

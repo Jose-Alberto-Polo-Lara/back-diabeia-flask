@@ -98,6 +98,8 @@ def login():
        if record.get('is_valid'):
            token = generate_token(record['user_id'], record['username'])
            record['token'] = token
+           result_menu = user_repository.catalog_menu(record.get('user_id'))
+           record['menu'] = result_menu.get('recordsets', [])
   
    return result
 
